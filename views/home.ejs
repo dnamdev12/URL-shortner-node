@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+  </head>
+  <body>
+    <h1>Welcome to the URL Shortener</h1>
+    <input type="text" id="urlInput" placeholder="Enter URL to shorten" />
+    <button id="shortenBtn">Shorten URL</button>
+    <p id="result"></p>
+
+    <script>
+      document
+        .getElementById("shortenBtn")
+        .addEventListener("click", async () => {
+          const url = document.getElementById("urlInput").value;
+          const response = await fetch("/api/url", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ redirectUrl: url }),
+          });
+          const data = await response.json();
+          document.getElementById("result").innerText = response.ok
+            ? `Shortened URL: ${location.origin}/url/${data.id}`
+            : `Error: ${data.error}`;
+        });
+    </script>
+  </body>
+</html>
